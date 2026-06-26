@@ -12,6 +12,24 @@ typedef struct node
     struct node *right;
 } DataType_node;
 
+// function to rotate right
+DataType_node * rightRotate(DataType_node * root){
+    DataType_node * newRoot = root->left;
+    DataType_node * temp = newRoot->right;
+    newRoot->right = root;
+    root->left = temp;
+    return newRoot;
+}
+
+// Funtion to left rotate
+DataType_node * leftRotate(DataType_node * root){
+    DataType_node * newRoot = root->right;
+    DataType_node * temp = newRoot->left;
+    newRoot->left = root;
+    root->right = temp;
+    return newRoot;
+}
+
 DataType_node *createStudent(int roll, const char names[], float marks)
 {
     DataType_node *newNode = (DataType_node *)malloc(sizeof(DataType_node));
@@ -46,6 +64,8 @@ int getBalanceFactor(DataType_node * node){
     return findHeight(node->left) - findHeight(node->right);
 }
 
+
+
 // insert nodes in BST
 DataType_node *insert(DataType_node *root, int roll, const char names[], float marks)
 {
@@ -75,6 +95,10 @@ DataType_node *insert(DataType_node *root, int roll, const char names[], float m
             printf("Its left skewed\n");
             printf("LL Type Case\n");
             printf("Right rotation required: %s\n", root->names);
+            // Ais will be the new root
+            root = rightRotate(root);
+            printf("My root is now: %s", root->names);
+            
         }
         else{
             printf("LR case detected\n");
@@ -84,15 +108,20 @@ DataType_node *insert(DataType_node *root, int roll, const char names[], float m
     }
     if(bf < -1){
         if(strcmp(names, root->right->names) > 0){
-            printf("Its a right skewed tree");
+            printf("Its a right skewed tree\n");
             printf("RR case detected\n");
             printf("Left Rotation required at %s\n", root->names);
+            root = leftRotate(root);
+            printf("My root is now: %s\n", root->names);
         }
         else{
             printf("RL case detected\n");
             printf("Right rotation required at %s\n", root->right->names);
             printf("Left rotation required at %s\n", root->names);
         }
+    }
+    if ((bf == 0) || (bf == 1) || (bf == -1)){
+        printf("The tree is balanced\n");
     }
 
 
@@ -249,10 +278,11 @@ int main()
 {
     DataType_node *root = NULL;
     root = insert(root, 101, "Amit", 89.3);
-    root = insert(root, 106, "Aiswarya", 78.8);
-    root = insert(root, 105, "Ajit", 78.8);
-    // root = insert(root, 102, "Kiran", 86.7);
-    // root = insert(root, 103, "Mary", 80.3);
+    // root = insert(root, 106, "Aiswarya", 78.8);
+    // root = insert(root, 104, "Abc", 68.8);
+    // root = insert(root, 105, "Ajit", 78.8);
+    root = insert(root, 102, "Kiran", 86.7);
+    root = insert(root, 103, "Mary", 80.3);
     // root = insert(root, 104, "Nancy", 50.8);
     // root = insert(root, 105, "Subu", 78.8);
     // root = insert(root, 107, "Anupa", 78.8);
